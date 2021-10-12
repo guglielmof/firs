@@ -44,6 +44,12 @@ shrd_path = ./data/shardings/
 <h2>Initializing firs</h2>
 Once the configuration file is ready, it is possible to start working with firs.
 
+Import firs and configure it:
+```
+import firs
+firs.configure(<path to configuration file>)
+```
+
 
 <h2>Iporting a collection</h2>
 
