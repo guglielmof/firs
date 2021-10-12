@@ -1,0 +1,1 @@
+from .TrecCollection import TrecCollection
