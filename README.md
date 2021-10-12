@@ -54,8 +54,15 @@ firs.configure(<path to configuration file>)
 
 <h2>Iporting a collection</h2>
 
+To import a trec collection,  run
 
+```
+#import the metadata of the collection
+collection = firs.TrecCollection(collectionName=<name of the collection as reported in the config file>)
 
+#import the collection
+collection = collection.import_collection()
+```
 
 <h2>Replicates</h2>
 
