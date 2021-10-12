@@ -58,7 +58,7 @@ To import a trec collection,  run
 
 ```
 #import the metadata of the collection
-collection = firs.TrecCollection(collectionName=<name of the collection as reported in the config file>)
+collection = firs.TrecCollection(collectionName=<name of the collection>)
 
 #import the collection: the operation might be very time consuming
 collection = collection.import_collection()
