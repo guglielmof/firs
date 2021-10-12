@@ -77,6 +77,8 @@ measures = collection.evaluate()
 
 <h2>Replicates</h2>
 
+Replicates represent multiple istances of the same experiment. An experiment is characterized by a subject (in IR, usually a topic) and the experimental conditions (in IR, usually the system used). Several approaches have been proposed to obtain the replicates. The simplest possible consists in considering human-made query reformulations. Note that, we do not provide any kind of dataset containing replicates: we only provide a strategy to handle them. A second approach consists in using reformulations. 
+
 <h3>Shardings</h3>
 
 <h3>Reformulations</h3>
