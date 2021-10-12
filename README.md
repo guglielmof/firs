@@ -40,6 +40,7 @@ qrel_path = ./data/TREC/TREC_08_1999_AdHoc/pool/qrels.trec8.adhoc.txt
 shrd_path = ./data/shardings/
 ```
 
+Non-public elements, such as the qrels, are not provided by firs. They need to be placed in the path specified in the configuration file. In any cases, firs can used to build runs and grid of points starting from a collection. 
 
 <h2>Initializing firs</h2>
 Once the configuration file is ready, it is possible to start working with firs.
