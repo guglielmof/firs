@@ -60,9 +60,11 @@ To import a trec collection,  run
 #import the metadata of the collection
 collection = firs.TrecCollection(collectionName=<name of the collection as reported in the config file>)
 
-#import the collection
+#import the collection: the operation might be very time consuming
 collection = collection.import_collection()
 ```
+
+the function ```import_collection``` takes ```nthreads``` as additional parameter to import the runs in a parallel fashon.
 
 <h2>Replicates</h2>
 
