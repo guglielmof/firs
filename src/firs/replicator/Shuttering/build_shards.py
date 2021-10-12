@@ -1,7 +1,8 @@
 import os
 from .shuttering_utils import _get_documents_list,_relevant_documents,is_shardable
+from ._random_sharding import _random_sharding
 
-def build_shards(self, **kwargs):
+def build_shards(self, save=False):
     # fetch the list of all documents
     docsList = _get_documents_list(self.collection)
 
@@ -15,23 +16,33 @@ def build_shards(self, **kwargs):
                             f"one or more topics has less relevant documents than shards")
 
     if self.sampling == "RNDM":
-        shards = self._random_sharding(self.nShards, rDocsByTopic, rDocsList, nrDocsList, self.emptyShards)
+        shards = _random_sharding(self.nShards, rDocsByTopic, rDocsList, nrDocsList, self.emptyShards)
     elif self.sampling == "EVEN":
         raise NotImplementedError
     else:
         raise ValueError(f"{self.sampling} is not a valid sampling process")
 
-    # if necessary save the shard
-    if kwargs['sharding.save']:
-        self.logger.info("saving the sharded collection")
-        sharding_path = self.collection['cpaths']['shrd_path']
 
-        os.mkdir(f"{sharding_path}{self.shutteringId}")
-        # shard IDs: collection_nShards_rep
-        for sId in shards:
-            shrdID = f"{self.shutteringId}_{sId:03d}"
+    sharding_path = f"{self.collection.cpaths['shrd_path']}{self.shutteringId}"
 
-            with open(f"{sharding_path}{self.shutteringId}/{shrdID}.txt", "w") as F:
-                F.write("\n".join(shards[sId]))
+    if save:
+
+        if not os.path.exists(sharding_path):
+            os.mkdir(sharding_path)
+
+        if save=='force':
+            for f in os.listdir(sharding_path):
+                os.remove(f"{sharding_path}/{f}")
+
+
+        if len(os.listdir(sharding_path))==0:
+            self.logger.info("saving the sharded collection")
+
+            # shard IDs: collection_nShards_rep
+            for sId in shards:
+                shrdID = f"{self.shutteringId}_{sId:03d}"
+
+                with open(f"{sharding_path}/{shrdID}.txt", "w") as F:
+                    F.write("\n".join(shards[sId]))
 
     return shards

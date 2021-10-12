@@ -7,18 +7,22 @@ def get_replicates(self, *args, **kwargs):
     self.logger.info(f"Getting the shuttering with id: {self.shutteringId}")
     # check if the data is already available
     sharding_path = self.collection.cpaths['shrd_path']
+    cname = self.collection.get_name()
 
-    if not _shards_available(self.shutteringId, sharding_path):
+    if 'sharding' in self.config.sections():
+        sharding_properties = dict(self.config.items('sharding'))
+    else:
+        sharding_properties = {'save': False}
+
+    save = (False if 'save' not in sharding_properties else sharding_properties['save'])
+
+    if not _shards_available(self.shutteringId, sharding_path) or save=='force':
+
 
         # if not, check if the user desires to build the shards
-        if 'sharding.pipeline' in kwargs and kwargs['sharding.pipeline']:
-            self.logger.info("\tshuttering not found. computing it.")
-            shards = self.build_shards(self.collection, **kwargs)
+        self.logger.info("\tshuttering not found. computing it.")
+        shards = self.build_shards(save=save)
 
-        else:
-            raise Exception(
-                f"data for sharding {self.shutteringId} is not available "
-                f"and sharding.pipeline is not set to 'true' in the property file")
 
     else:
         shards = _import_precomputed_shards(self.shutteringId, sharding_path)

@@ -1,5 +1,5 @@
 from ..utils import Logger
-
+from .. import configuration
 '''
 An replicator is a structure which contains replicates of the experiments.
 An experiment is a pair <system, topic>. Replicates might be, for example, reformulations or shards.
@@ -15,6 +15,7 @@ class AbstractReplicator:
     def __init__(self, collection, *args, **kwargs):
         self.logger = Logger().logger
         self.collection = collection
+        self.config = self.configs = configuration().get_config()
         self.experiment = self.get_replicates(*args, **kwargs)
 
 
