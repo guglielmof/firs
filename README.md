@@ -43,7 +43,7 @@ shrd_path = ./data/shardings/
 
 Non-public elements, such as the qrels, are not provided by firs. They need to be placed in the path specified in the configuration file. In any cases, firs can used to build runs and grid of points starting from a collection. 
 
-<h2>Initializing firs</h2>
+<h3>Initializing firs</h3>
 Once the configuration file is ready, it is possible to start working with firs.
 
 Import firs and configure it:
@@ -52,7 +52,7 @@ import firs
 firs.configure(<path to configuration file>)
 ```
 
-<h3>firs as Collections Manager</h3>
+<h2>firs as Collections Manager</h2>
 
 <h3>Importing a Collection</h3>
 
