@@ -103,6 +103,8 @@ Replicates represent multiple istances of the same experiment. An experiment is 
 
 <h4>Shardings</h4>
 
+The sharding procedure consists in inflating the number of observations by splitting the corpora into multiple subcorpora and running a specific experiment (a system applied to a specific query) multiple times, over each of the subcorpora.
+
 <h4>Reformulations</h4>
 
 
