@@ -19,7 +19,7 @@ To install firs, use the pip command:
 <code>pip install firs</code>
 
 
-<h2>The configuration file</h2>
+<h3>The configuration file</h3>
 
 To work, firs relies on a configuration file. The configuration file needs a section for the paths and a section for each of the collections that you want to work on. In the "path" section, it is mandatory to specify the path to the jdk. Notice that, firs is based on pyterrier and therefore requires a jdk ≥ 11.
 
@@ -52,9 +52,9 @@ import firs
 firs.configure(<path to configuration file>)
 ```
 
-<h3>irs as Collections Manager</h3>
+<h3>firs as Collections Manager</h3>
 
-<h2>Importing a Collection</h2>
+<h3>Importing a Collection</h3>
 
 To import a trec collection,  run
 
@@ -97,13 +97,13 @@ measures = collection.import_measures()
 It is possible to directly import the proper measure file.
 Notice that, using either ```parallel_evaluate``` and ```import_measures``` there is no need to run ```import_collection``` on the collection object before.
 
-<h2>Replicates</h2>
+<h3>Replicates</h3>
 
 Replicates represent multiple istances of the same experiment. An experiment is characterized by a subject (in IR, usually a topic) and the experimental conditions (in IR, usually the system used). Several approaches have been proposed to obtain the replicates. The simplest possible consists in considering human-made query reformulations. Note that, we do not provide any kind of dataset containing replicates: we only provide a strategy to handle them. A second approach consists in using reformulations. 
 
-<h3>Shardings</h3>
+<h4>Shardings</h4>
 
-<h3>Reformulations</h3>
+<h4>Reformulations</h4>
 
 
 <h2> firs as Grid of Points (GoP) Experimental tool </h2>
