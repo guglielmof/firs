@@ -112,6 +112,25 @@ A sharding on a collection is characterized by 3 elements:
   <li>Whether shards are allowed or not</li>
 </ul>
 
+By calling:
+```
+sharding = firs.Shuttering(collection, sampling=<type of sampling>, nShards=<number of shards>, emptyShards=<empty label>)
+```
+
+Is it possible to obtain a sharding of the collection. A sharding is practically identical to a collection object, with the difference that both the qrel and the runs are splitted according to a division of the collection into shard.
+The instruction:
+```
+sharded_measure = sharding.evaluate()
+```
+allows to evaluate the systems on the sharded collection.
+
+Concerning the arguments passed to the constructor of the sharding, we have that:
+<ul>
+  <li>```sampling```: it can be either ```EVEN``` where all the shards will be equal or ```RNDM``` where different shards can heve different lenghts</li>
+  <li>```nShards```: it needs to be an integer number</li>
+  <li>```emptyShards```: it can have either one of ```E```, which allows to have shards without any relevant document or ```NE```, in which every shard shoud have at least one relevant document for each of the topic</li>
+</ul>
+
 <h4>Reformulations</h4>
 
 
