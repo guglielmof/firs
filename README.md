@@ -126,7 +126,7 @@ allows to evaluate the systems on the sharded collection.
 
 Concerning the arguments passed to the constructor of the sharding, we have that:
 <ul>
-  <li>```sampling```: it can be either ```EVEN``` where all the shards will be equal or ```RNDM``` where different shards can heve different lenghts</li>
+  <li><code>sampling</code>: it can be either ```EVEN``` where all the shards will be equal or ```RNDM``` where different shards can heve different lenghts</li>
   <li>```nShards```: it needs to be an integer number</li>
   <li>```emptyShards```: it can have either one of ```E```, which allows to have shards without any relevant document or ```NE```, in which every shard shoud have at least one relevant document for each of the topic</li>
 </ul>
