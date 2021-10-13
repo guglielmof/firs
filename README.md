@@ -64,10 +64,10 @@ collection = firs.TrecCollection(collectionName=<name of the collection>)
 collection = collection.import_collection()
 ```
 
-The function ```import_collection``` takes ```nthreads``` as additional parameter to import the runs in a parallel fashon. If you want to import the runs using 10 processors, do:
+The function ```import_collection``` takes ```nThreads``` as additional parameter to import the runs in a parallel fashon. If you want to import the runs using 10 processors, do:
 
 ```
-collection = collection.import_collection(nthreads=10)
+collection = collection.import_collection(nThreads=10)
 ```
 
 
