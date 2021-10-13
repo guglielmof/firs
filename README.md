@@ -116,3 +116,7 @@ A sharding on a collection is characterized by 3 elements:
 
 
 <h2> firs as Grid of Points (GoP) Experimental tool </h2>
+
+<h3>Indexing</h3>
+
+<h3>Retrieving</h3>
