@@ -52,7 +52,7 @@ firs.configure(<path to configuration file>)
 ```
 
 
-<h2>Iporting a collection</h2>
+<h2>Importing a collection</h2>
 
 To import a trec collection,  run
 
@@ -70,10 +70,23 @@ The function ```import_collection``` takes ```nthreads``` as additional paramete
 collection = collection.import_collection(nthreads=10)
 ```
 
+
+<h3>Computing measures</h3>
 To compute the measures on the selected collection, using the given qrels, run:
 ```
 measures = collection.evaluate()
 ```
+Notice that, this command assumes to have the full collection available (qrels alongside runs) and imported.
+
+In some cases, the number of runs might be extremely high and it might be preferable to compute the measure run by run on the fly, avoiding to load all the runs. 
+By running
+
+```
+measures = collection.parallel_evalutate(nThreads=<number of threads>)
+```
+It is possible to compute the measure in a parallel fashon and without preloading all the runs. 
+
+Finally, it might be preferable, if available, to directly import a measure file. The path to the measure file need to be specified in the configuration file, under the proper collection, using the label ```msrs_path=path to the csv containing the measures```
 
 <h2>Replicates</h2>
 
