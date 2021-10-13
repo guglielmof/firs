@@ -105,6 +105,13 @@ Replicates represent multiple istances of the same experiment. An experiment is 
 
 The sharding procedure consists in inflating the number of observations by splitting the corpora into multiple subcorpora and running a specific experiment (a system applied to a specific query) multiple times, over each of the subcorpora.
 
+A sharding on a collection is characterized by 3 elements:
+<ul>
+  <li>The number of shards</li>
+  <li>The number of documents in each shard</li>
+  <li>Whether shards are allowed or not</li>
+</ul>
+
 <h4>Reformulations</h4>
 
 
