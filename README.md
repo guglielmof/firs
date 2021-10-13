@@ -86,7 +86,14 @@ measures = collection.parallel_evalutate(nThreads=<number of threads>)
 ```
 It is possible to compute the measure in a parallel fashon and without preloading all the runs. 
 
-Finally, it might be preferable, if available, to directly import a measure file. The path to the measure file need to be specified in the configuration file, under the proper collection, using the label ```msrs_path=path to the csv containing the measures```
+Finally, it might be preferable, if available, to directly import a measure file. The path to the measure file need to be specified in the configuration file, under the proper collection, using the label ```msrs_path=path to the csv containing the measures```.
+Using the command:
+
+```
+measures = collection.import_measures()
+```
+It is possible to directly import the proper measure file.
+Notice that, using either ```parallel_evaluate``` and ```import_measures``` there is no need to run ```import_collection``` on the collection object before.
 
 <h2>Replicates</h2>
 
