@@ -1,5 +1,5 @@
 
-<h1>Firs: a (python) Framework for Information Retrieval Systems.</h1>
+<h1>firs: a (python) Framework for Information Retrieval Systems.</h1>
 
 Firs is a python package, based on pyterrier, developed to help experimentation in Information Retireval.
 
