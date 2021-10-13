@@ -10,8 +10,9 @@ Firs have multiple functions:
   <li> It allows to compute and handle replicates (such as shards or reformulations) </li>
 </ul>
 
+<h2>Setting firs up</h2>
 
-<h2>Install</h2>
+<h3>Install</h3>
 
 To install firs, use the pip command:
 
@@ -51,8 +52,9 @@ import firs
 firs.configure(<path to configuration file>)
 ```
 
+<h3>irs as Collections Manager</h3>
 
-<h2>Importing a collection</h2>
+<h2>Importing a Collection</h2>
 
 To import a trec collection,  run
 
@@ -102,3 +104,6 @@ Replicates represent multiple istances of the same experiment. An experiment is 
 <h3>Shardings</h3>
 
 <h3>Reformulations</h3>
+
+
+<h2> firs as Grid of Points (GoP) Experimental tool </h2>
