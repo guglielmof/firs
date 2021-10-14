@@ -136,6 +136,35 @@ Concerning the arguments passed to the constructor of the sharding, we have that
 
 <h2> firs as Grid of Points (GoP) Experimental tool </h2>
 
+<h3>The configuration file</h3>
+Besides the information on the collection, to obtain a Grid of Points, the configuration file needs to be updated with some additional sections
+
+```
+[GoP]
+stoplists = <list of comma-separated stoplists>
+stemmers = <list of comma-separated stemmers>
+models = <list of comma-separated models>
+queryexpansions = <list of comma-separated query expansion models>
+
+[stoplists]
+
+stoplist.stoplist1 = <path to the stoplist>
+
+stoplist.stoplist2 = <path to the stoplist>
+
+[stemmers]
+
+stoplist.stemmer1 = <name of the terrier class implementing the stemmer 1>
+
+stoplist.stemmer2 = <name of the terrier class implementing the stemmer 2>
+
+
+[models]
+
+
+[queryexpansions]
+
+```
 <h3>Indexing</h3>
 
 <h3>Retrieving</h3>
