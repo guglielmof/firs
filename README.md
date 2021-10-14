@@ -165,6 +165,8 @@ stoplist.stemmer2 = <name of the terrier class implementing the stemmer 2>
 [queryexpansions]
 
 ```
+Use the keyword <code>none</code> to avoid using a specific component (possible only for the stoplist, the stemmer and the query expansion model).
+
 <h3>Indexing</h3>
 
 <h3>Retrieving</h3>
