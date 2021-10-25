@@ -6,6 +6,8 @@ import json
 from multiprocessing import Pool
 from ..configuration import configuration
 
+from .pipeline_factory import *
+
 
 def index_collection(collection, nThreads=1):
     configs = configuration().get_config()
@@ -23,39 +25,21 @@ def index_collection(collection, nThreads=1):
     logger.info(f"started indexing the collection {collection.get_name()}. found {len(idx_conf)} configurations...")
     s = time.time()
 
-    print(idx_conf)
 
-    '''
+
     with Pool(processes=nThreads) as pool:
-        futureIndexes = [pool.apply_async(_parallel_indexing, [collection, config]) for ic in idx_conf]
+        futureIndexes = [pool.apply_async(_parallel_indexing, [collection, ic]) for ic in idx_conf]
         _ = [fi.get() for fi in futureIndexes]
-    '''
+
 
     logger.info(f"complete indexing done in {time.time()-s:.2f} seconds.")
 
 
-def config_mapper(configuration):
-    configs = configuration().get_config()
 
-    stemmer_classes = dict(configs.items('stemmers'))
-    stoplist_classes = dict(configs.items('stoplists'))
+def _parallel_indexing(collection, ic):
+    stop, stem = ic
+    conf_name = f"{stop}_{stem}"
 
-    stop, stem = configuration
-
-
-    if stop=="none":
-        if stem=="none":
-            return None,"NoOp,NoOp"
-        else:
-            return f"NoOp,{stem}"
-    else:
-        if stem=="none":
-            return f"{stop}"
-
-        return f"{stop},{stem}"
-
-
-def _parallel_indexing(collection, configuration):
     if not pt.started():
         pt.init()
 
@@ -71,15 +55,15 @@ def _parallel_indexing(collection, configuration):
 
 
 
-    logger.info(f"started indexing the collection {coll_id} with configuration {configuration}...")
+    logger.info(f"started indexing the collection {coll_id} with configuration {conf_name}...")
     stime = time.time()
-    if configuration not in os.listdir(indx_path):
-        os.mkdir(f"{indx_path}/{configuration}")
-    indexer = pt.TRECCollectionIndexer(f"{indx_path}/{configuration}", verbose=False)
+    if conf_name not in os.listdir(indx_path):
+        os.mkdir(f"{indx_path}/{conf_name}")
+    indexer = pt.TRECCollectionIndexer(f"{indx_path}/{conf_name}", verbose=False)
 
-    indexer.setProperty("termpipelines", config_mapper(configuration))
+    indexer.setProperty("termpipelines", get_stopandstem(stop, stem))
     indexref = indexer.index(files)
-    logger.info(f"indexing {coll_id} with configuration {configuration} done in {time.time() - stime:.2f}s.")
+    logger.info(f"indexing {coll_id} with configuration {conf_name} done in {time.time() - stime:.2f}s.")
     index = pt.IndexFactory.of(indexref)
     logger.info(index.getCollectionStatistics().toString())
 

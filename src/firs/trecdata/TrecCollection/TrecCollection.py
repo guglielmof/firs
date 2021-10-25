@@ -11,6 +11,7 @@ class TrecCollection:
     def __init__(self, **kwargs):
         self.configs = configuration().get_config()
         self.logger = Logger().logger
+        self.topics = None
 
         # the name of the collection is one of the predefined; it can be imported directly
         if 'collectionName' in kwargs and f"collections.{kwargs['collectionName']}" in self.configs.sections():
@@ -32,6 +33,7 @@ class TrecCollection:
     from .evaluate import evaluate
     from .parallel_evaluate import parallel_evaluate
     from .misc import remove_shorter_runs
+    from .get_topics import get_topics, _import_topics
 
 
     def _import_paths(self, collectionName):

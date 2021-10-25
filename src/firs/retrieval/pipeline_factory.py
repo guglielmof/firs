@@ -1,53 +1,46 @@
+from ..configuration import configuration
+import importlib
+import sys
 
 
+def get_pipeline(pt, index, conf):
+    stop, stem, model, qryexp = conf
 
-def _module_factory(pt, index, module, stopandstem):
-    if module in ["BM25", "QLM", "DFR", "PL2", "InL2", "DLH", "DPH", "DFRee", "DFI0", "DirichletLM", "DFIC", "DFIZ",
-                  "InB2", "InL2"]:
-                  
-        return pt.BatchRetrieve(index, wmodel=module, verbose=False, properties={"termpipelines" : stopandstem})
+    models_dict = dict(configuration().get_config().items(f'models'))
+    qryexp_dict = dict(configuration().get_config().items(f'queryexpansions'))
 
-    elif module == "HiemstraLM":
-        return pt.BatchRetrieve(index, wmodel="Hiemstra_LM", verbose=False, properties={"termpipelines" : stopandstem})
+    stopandstem = get_stopandstem(stop, stem)
 
-    elif module == "InexpB2":
-        return pt.BatchRetrieve(index, wmodel="In_expB2", verbose=False, properties={"termpipelines" : stopandstem})
+    mdclass = models_dict[f'model.{model}.class']
+    mdtype = models_dict[f'model.{model}.type']
 
-    elif module == "InexpC2":
-        return pt.BatchRetrieve(index, wmodel="In_expC2", verbose=False, properties={"termpipelines" : stopandstem})
-    elif module == "JsKLs":
-        return pt.BatchRetrieve(index, wmodel="Js_KLs", verbose=False, properties={"termpipelines" : stopandstem})
-
-    elif module == "TFIDF":
-        return pt.BatchRetrieve(index, wmodel="TF_IDF", verbose=False, properties={"termpipelines" : stopandstem})
-
-    elif module in ["Bo1QueryExpansion", "RM3", "AxiomaticQE", "KLQueryExpansion"]:
-        return getattr(pt.rewrite, module)(index, verbose=False, properties={"termpipelines" : stopandstem})
-
-
-def get_pipeline(pt, index, config):
-    components = config.split("_")
-    stopandstem = config_mapper("_".join(components[:2]))
-    retriever = _module_factory(pt, index, components[2], stopandstem)
-
-    if components[3] == 'none':
-
-        return retriever
-
+    if mdtype == 'terrier':
+        pipeline = pt.BatchRetrieve(index, wmodel=mdclass, verbose=False, properties={"termpipelines": stopandstem})
     else:
+        pass
 
-        return retriever >> _module_factory(pt, index, components[3], stopandstem) >> retriever
+    if qryexp != 'none':
+        qeclass = qryexp_dict[f'queryexpansions.{qryexp}.class']
+        qetype = qryexp_dict[f'queryexpansions.{qryexp}.type']
 
-
-
-def config_mapper(configuration):
-    stop, stem = configuration.split("_")
-    if stop=="none":
-        if stem=="none":
-            return "NoOp"
+        if qetype == 'terrier':
+            rewriter = getattr(pt.rewrite, qeclass)(index, verbose=False, properties={"termpipelines": stopandstem})
+            pipeline = pipeline >> rewriter >> pipeline
         else:
-            return f"{stem}"
+            pass
+
+    return pipeline
+
+
+def get_stopandstem(stop, stem):
+    if stop == "none":
+        stopFinal = "NoOp"
     else:
-        if stem=="none":
-            return f"{stop}"
-        return f"{stop},{stem}"
+        stopFinal = stop
+
+    if stem == "none":
+        stemFinal = "NoOp"
+    else:
+        stemFinal = stem
+
+    return f"{stopFinal},{stemFinal}"
