@@ -1,6 +1,7 @@
 import numpy as np
 import os
 
+
 def _get_documents_list(collection):
     docs = []
 
@@ -11,18 +12,22 @@ def _get_documents_list(collection):
 
     return list(set(docs))
 
+
 def _relevant_documents(collection):
     relDocsByTopic = {}
-    relDocs = []
+    relDocs = set()
 
     for t in collection.qrel:
         rdt = [d for d, r in collection.qrel[t].items() if r > 0]
         relDocsByTopic[t] = set(rdt)
-        relDocs += rdt
+        relDocs = relDocs.union(relDocsByTopic[t])
 
-    return relDocs, relDocsByTopic
+    return list(relDocs), relDocsByTopic
+
 
 def checkShardingValidity(relDocsByShard, relDocsByTopic):
+    if not relDocsByShard:
+        return False
 
     found = True
     for t, t2rdocs in relDocsByTopic.items():
@@ -32,11 +37,11 @@ def checkShardingValidity(relDocsByShard, relDocsByTopic):
                 break
         if not found:
             break
-
     return found
 
+
 def is_shardable(nShards, relDocsByTopic):
-    return np.all([len(rd)>=nShards for _, rd in relDocsByTopic.items()])
+    return np.all([len(rd) >= nShards for _, rd in relDocsByTopic.items()])
 
 
 def _shards_available(shutteringId, sharding_path):

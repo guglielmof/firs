@@ -1,3 +1,3 @@
 from .indexing import index_collection
-from .retrieving import retrieve
+from .retrieving import retrieve_collection
 

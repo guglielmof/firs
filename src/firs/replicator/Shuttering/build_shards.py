@@ -1,6 +1,7 @@
 import os
 from .shuttering_utils import _get_documents_list,_relevant_documents,is_shardable
 from ._random_sharding import _random_sharding
+from ._even_sharding import _even_sharding
 
 def build_shards(self, save=False):
     # fetch the list of all documents
@@ -18,7 +19,7 @@ def build_shards(self, save=False):
     if self.sampling == "RNDM":
         shards = _random_sharding(self.nShards, rDocsByTopic, rDocsList, nrDocsList, self.emptyShards)
     elif self.sampling == "EVEN":
-        raise NotImplementedError
+        shards = _even_sharding(self.nShards, rDocsByTopic, rDocsList, nrDocsList, self.emptyShards)
     else:
         raise ValueError(f"{self.sampling} is not a valid sampling process")
 

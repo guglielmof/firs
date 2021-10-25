@@ -7,54 +7,76 @@ from multiprocessing import Pool
 from ..configuration import configuration
 
 
-os.environ['JAVA_HOME'] = configuration().get_configs()['PATHS']['JAVAHOME']
-
-def index_collection(coll_id, coll_path, indx_path, nThreads=1):
+def index_collection(collection, nThreads=1):
+    configs = configuration().get_config()
+    os.environ['JAVA_HOME'] = dict(configs.items('paths'))['java_home']
+    gop = dict(configs.items('GoP'))
 
     logger = Logger().logger
 
-    with open(configuration().get_configs()['PATHS']['GOP_CONFIG'], "r") as F:
-        gp = json.load(F)
 
+    stoplists = gop['stoplists'].split(",")
+    stemmers = gop['stemmers'].split(",")
 
-    configs = [f"{stop}_{stem}"  for stop in gp["stopwords"] for stem in gp["stemmers"]]
+    idx_conf = [(stop, stem) for stop in stoplists for stem in stemmers]
 
-    logger.info(f"started indexing the collection {coll_id}. found {len(configs)} configurations...")
+    logger.info(f"started indexing the collection {collection.get_name()}. found {len(idx_conf)} configurations...")
     s = time.time()
-    with Pool(processes=nThreads) as pool:
-        futureRuns = [pool.apply_async(_parallel_indexing, [coll_id, coll_path, indx_path, config]) for config in configs]
-        runs = [fr.get() for fr in futureRuns]
 
+    print(idx_conf)
+
+    '''
+    with Pool(processes=nThreads) as pool:
+        futureIndexes = [pool.apply_async(_parallel_indexing, [collection, config]) for ic in idx_conf]
+        _ = [fi.get() for fi in futureIndexes]
+    '''
 
     logger.info(f"complete indexing done in {time.time()-s:.2f} seconds.")
 
 
 def config_mapper(configuration):
-    stop, stem = configuration.split("_")
+    configs = configuration().get_config()
+
+    stemmer_classes = dict(configs.items('stemmers'))
+    stoplist_classes = dict(configs.items('stoplists'))
+
+    stop, stem = configuration
+
+
     if stop=="none":
         if stem=="none":
-            return "NoOp"
+            return None,"NoOp,NoOp"
         else:
-            return f"{stem}"
+            return f"NoOp,{stem}"
     else:
         if stem=="none":
             return f"{stop}"
+
         return f"{stop},{stem}"
 
 
-def _parallel_indexing(coll_id, coll_path, indx_path, configuration):
+def _parallel_indexing(collection, configuration):
     if not pt.started():
         pt.init()
 
     logger = Logger().logger
 
+
+    coll_id = collection.get_name()
+    cpaths = collection.get_paths()
+    coll_path = cpaths['coll_path']
+    indx_path = cpaths['indx_path']
+
     files = pt.io.find_files(coll_path)
+
+
 
     logger.info(f"started indexing the collection {coll_id} with configuration {configuration}...")
     stime = time.time()
     if configuration not in os.listdir(indx_path):
         os.mkdir(f"{indx_path}/{configuration}")
     indexer = pt.TRECCollectionIndexer(f"{indx_path}/{configuration}", verbose=False)
+
     indexer.setProperty("termpipelines", config_mapper(configuration))
     indexref = indexer.index(files)
     logger.info(f"indexing {coll_id} with configuration {configuration} done in {time.time() - stime:.2f}s.")

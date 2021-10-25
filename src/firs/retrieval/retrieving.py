@@ -14,12 +14,9 @@ from ..configuration import configuration
 os.environ['JAVA_HOME'] = '/mnt/SOFTWARE/jdk-11.0.11'
 
 
-def retrieve(coll_id, topics, runs_path, index_path, nThreads=1):
+def retrieve_collection(coll_id, topics, runs_path, index_path, nThreads=1):
 
     logger = Logger().logger
-
-    with open("retrieval/gop_properties.json", "r") as F:
-        gp = json.load(F)
 
 
     configs = [f"{stop}_{stem}_{model}_{qe}"

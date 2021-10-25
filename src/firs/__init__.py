@@ -6,8 +6,8 @@ from .configuration import configuration
 from .simple_test import simple_test
 
 from .trecdata import *
-
 from .replicator import *
+from .retrieval import *
 
 import os
 

@@ -21,6 +21,9 @@ class TrecCollection:
     def get_name(self):
         return self.collection_name
 
+    def get_paths(self):
+        return self.cpaths
+
     def __str__(self):
         return f"collection: {self.collection_name}\n\t* topics: {len(self.qrel)}\n\t* runs: {len(self.runs)}"
 
