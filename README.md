@@ -112,7 +112,61 @@ A sharding on a collection is characterized by 3 elements:
   <li>Whether shards are allowed or not</li>
 </ul>
 
+By calling:
+```
+sharding = firs.Shuttering(collection, sampling=<type of sampling>, nShards=<number of shards>, emptyShards=<empty label>)
+```
+
+Is it possible to obtain a sharding of the collection. A sharding is practically identical to a collection object, with the difference that both the qrel and the runs are splitted according to a division of the collection into shard.
+The instruction:
+```
+sharded_measure = sharding.evaluate()
+```
+allows to evaluate the systems on the sharded collection.
+
+Concerning the arguments passed to the constructor of the sharding, we have that:
+<ul>
+  <li><code>sampling</code>: it can be either <code>EVEN</code>where all the shards will be equal or <code>RNDM</code> where different shards can heve different lenghts</li>
+  <li><code>nShards</code>: it needs to be an integer number</li>
+  <li><code>emptyShards</code>: it can have either one of <code>E</code>, which allows to have shards without any relevant document or <code>NE</code>, in which every shard shoud have at least one relevant document for each of the topic</li>
+</ul>
+
 <h4>Reformulations</h4>
 
 
 <h2> firs as Grid of Points (GoP) Experimental tool </h2>
+
+<h3>The configuration file</h3>
+Besides the information on the collection, to obtain a Grid of Points, the configuration file needs to be updated with some additional sections
+
+```
+[GoP]
+stoplists = <list of comma-separated stoplists>
+stemmers = <list of comma-separated stemmers>
+models = <list of comma-separated models>
+queryexpansions = <list of comma-separated query expansion models>
+
+[stoplists]
+
+stoplist.stoplist1 = <path to the stoplist>
+
+stoplist.stoplist2 = <path to the stoplist>
+
+[stemmers]
+
+stoplist.stemmer1 = <name of the terrier class implementing the stemmer 1>
+
+stoplist.stemmer2 = <name of the terrier class implementing the stemmer 2>
+
+
+[models]
+
+
+[queryexpansions]
+
+```
+Use the keyword <code>none</code> to avoid using a specific component (possible only for the stoplist, the stemmer and the query expansion model).
+
+<h3>Indexing</h3>
+
+<h3>Retrieving</h3>
