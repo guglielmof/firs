@@ -161,8 +161,22 @@ stoplist.stemmer2 = <name of the terrier class implementing the stemmer 2>
 
 [models]
 
+model.BM25.type = terrier
+model.BM25.class = BM25
+
+
+model.custommodel.type = python
+model.custommodel.class = path/to/custommodel/class.py
+
 
 [queryexpansions]
+
+queryexpansions.RM3.type = terrier
+queryexpansions.RM3.class = RM3
+
+queryexpansions.custommodel.type = python
+queryexpansions.custommodel.class = path/to/custommodel/class.py
+
 
 ```
 Use the keyword <code>none</code> to avoid using a specific component (possible only for the stoplist, the stemmer and the query expansion model).
