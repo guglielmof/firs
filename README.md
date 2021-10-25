@@ -161,12 +161,49 @@ stoplist.stemmer2 = <name of the terrier class implementing the stemmer 2>
 
 [models]
 
+model.BM25.type = terrier
+model.BM25.class = BM25
+
+
+model.custommodel.type = python
+model.custommodel.class = path/to/custommodel/class.py
+
 
 [queryexpansions]
+
+queryexpansions.RM3.type = terrier
+queryexpansions.RM3.class = RM3
+
+queryexpansions.custommodel.type = python
+queryexpansions.custommodel.class = path/to/custommodel/class.py
+
 
 ```
 Use the keyword <code>none</code> to avoid using a specific component (possible only for the stoplist, the stemmer and the query expansion model).
 
 <h3>Indexing</h3>
 
+To index a collection, add a new variable in the configuration file under the collection you wish to index
+
+```
+indx_path = /path/to/where/to/put/the/indexes
+```
+
+after the collection object has been preloaded with the command <code>collection = firs.TrecCollection(collectionName="name of the collection")</code>, it is possible to index it simply doing
+  
+```
+firs.index_collection(coll, nThreads=<default 1>)
+``` 
+
 <h3>Retrieving</h3>
+
+To retrieve a set of topics, it is first necessary to import a pandas with the topics. to do so, add an additional field to the configuration file, under the collaction that you wish to retrieve documents for: 
+
+```
+topic_parser = pandas_csv_reader
+```
+
+this configuration parameter specifies which parser to  use to read the topics. 
+
+
+
