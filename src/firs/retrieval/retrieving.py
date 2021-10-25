@@ -53,7 +53,6 @@ def _parallel_retrieving(topics, collection, cnfg):
 
     logger = Logger().logger
 
-    print(cnfg)
     text_cnfg = "_".join(list(cnfg))
     logger.info(f"retrieving documents for {len(topics.index)} queries, with system {text_cnfg}")
 
@@ -62,13 +61,13 @@ def _parallel_retrieving(topics, collection, cnfg):
 
     index = pt.IndexFactory.of(f"{index_path}/{stoplist}_{stemmer}/data.properties")
 
-    '''
-    pipeline = get_pipeline(pt, index, config)
+
+    pipeline = get_pipeline(pt, index, cnfg)
 
     run = pipeline(topics)
 
-    run = pyterrier2trec(run, config)
+    run = pyterrier2trec(run, text_cnfg)
     run = run[['qid', 'useless', 'docno', 'rank', 'score', 'name']]
-    run.to_csv(f"{runs_path}/{config}.txt", index=False, header=False, sep="\t")
-    '''
+    run.to_csv(f"{runs_path}/{text_cnfg}.txt", index=False, header=False, sep="\t")
+    
     logger.info(f"documents for configuration: {text_cnfg} retrieved in {time.time() - stime:.2f}")

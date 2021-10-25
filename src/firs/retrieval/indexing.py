@@ -39,6 +39,7 @@ def index_collection(collection, nThreads=1):
 def _parallel_indexing(collection, ic):
     stop, stem = ic
     conf_name = f"{stop}_{stem}"
+    stopandstem, stopfile = get_stopandstem(stop, stem)
 
     if not pt.started():
         pt.init()
@@ -61,7 +62,10 @@ def _parallel_indexing(collection, ic):
         os.mkdir(f"{indx_path}/{conf_name}")
     indexer = pt.TRECCollectionIndexer(f"{indx_path}/{conf_name}", verbose=False)
 
-    indexer.setProperty("termpipelines", get_stopandstem(stop, stem))
+    if stopfile is not None:
+        indexer.setProperty("stopwords.filename", stopfile)
+
+    indexer.setProperty("termpipelines", stopandstem)
     indexref = indexer.index(files)
     logger.info(f"indexing {coll_id} with configuration {conf_name} done in {time.time() - stime:.2f}s.")
     index = pt.IndexFactory.of(indexref)
