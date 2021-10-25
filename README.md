@@ -183,4 +183,16 @@ Use the keyword <code>none</code> to avoid using a specific component (possible 
 
 <h3>Indexing</h3>
 
+To index a collection, add a new variable in the configuration file under the collection you wish to index
+
+```
+indx_path = /path/to/where/to/put/the/indexes
+```
+
+after the collection object has been preloaded with the command <code>collection = firs.TrecCollection(collectionName=<name of the collection>)</code>, it is possible to index it simply doing
+  
+```
+firs.index_collection(coll, nThreads=<default 1>)
+``` 
+
 <h3>Retrieving</h3>
