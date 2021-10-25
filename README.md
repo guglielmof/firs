@@ -196,3 +196,14 @@ firs.index_collection(coll, nThreads=<default 1>)
 ``` 
 
 <h3>Retrieving</h3>
+
+To retrieve a set of topics, it is first necessary to import a pandas with the topics. to do so, add an additional field to the configuration file, under the collaction that you wish to retrieve documents for: 
+
+```
+topic_parser = pandas_csv_reader
+```
+
+this configuration parameter specifies which parser to  use to read the topics. 
+
+
+
