@@ -189,7 +189,7 @@ To index a collection, add a new variable in the configuration file under the co
 indx_path = /path/to/where/to/put/the/indexes
 ```
 
-after the collection object has been preloaded with the command <code>collection = firs.TrecCollection(collectionName=<name of the collection>)</code>, it is possible to index it simply doing
+after the collection object has been preloaded with the command <code>collection = firs.TrecCollection(collectionName="name of the collection")</code>, it is possible to index it simply doing
   
 ```
 firs.index_collection(coll, nThreads=<default 1>)
