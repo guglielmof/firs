@@ -10,8 +10,6 @@ from .pyterrier2trec import pyterrier2trec
 
 from ..configuration import configuration
 
-os.environ['JAVA_HOME'] = '/mnt/SOFTWARE/jdk-11.0.11'
-
 
 def retrieve_collection(collection, nThreads=1):
     logger = Logger().logger
@@ -68,6 +66,6 @@ def _parallel_retrieving(topics, collection, cnfg):
 
     run = pyterrier2trec(run, text_cnfg)
     run = run[['qid', 'useless', 'docno', 'rank', 'score', 'name']]
-    run.to_csv(f"{runs_path}/{text_cnfg}.txt", index=False, header=False, sep="\t")
-    
+    run.to_csv(f"{runs_path}{text_cnfg}.txt", index=False, header=False, sep="\t")
+
     logger.info(f"documents for configuration: {text_cnfg} retrieved in {time.time() - stime:.2f}")

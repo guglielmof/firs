@@ -6,7 +6,7 @@ from multiprocessing import Pool
 import pytrec_eval
 
 
-def parallel_evaluate(self, nThreads=1, measure="map"):
+def parallel_evaluate(self,measure, nThreads=1, savePath=None):
 
 
     self.logger.info("\t*importing the qrels...")
@@ -23,13 +23,14 @@ def parallel_evaluate(self, nThreads=1, measure="map"):
 
         measures = pd.concat([fm.get() for fm in futureMeasures])
 
+    if savePath is not None:
+        measures.to_csv(self.cpaths['msrs_path'])
+
     return measures
 
 
 def _evaluate_chunk(measure, runs_paths, qrels):
     logger = Logger().logger
-
-    topic_evaluators = {tID: pytrec_eval.RelevanceEvaluator({tID: qrels[tID]}, {measure}) for tID in qrels}
 
     measures = []
 
@@ -37,15 +38,7 @@ def _evaluate_chunk(measure, runs_paths, qrels):
     for run_file in runs_paths:
         rname = ".".join(run_file.split("/")[-1].split(".")[:-1])
         with open(run_file, "r") as F:
-
             run = pytrec_eval.parse_run(F)
+            measures.append(measure(qrels, {rname:run}))
 
-            for tID in topic_evaluators:
-                pointMeasure = topic_evaluators[tID].evaluate({tID: run[tID]})
-                pointMeasure = pointMeasure[tID]['map']
-                measures.append([rname, tID, pointMeasure])
-
-
-    measures = pd.DataFrame(measures, columns=['system', 'topic', 'measure'])
-
-    return measures
+    return pd.concat(measures)

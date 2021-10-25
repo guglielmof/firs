@@ -60,7 +60,7 @@ def _parallel_indexing(collection, ic):
     stime = time.time()
     if conf_name not in os.listdir(indx_path):
         os.mkdir(f"{indx_path}/{conf_name}")
-    indexer = pt.TRECCollectionIndexer(f"{indx_path}/{conf_name}", verbose=False)
+    indexer = pt.TRECCollectionIndexer(f"{indx_path}{conf_name}", verbose=False)
 
     if stopfile is not None:
         indexer.setProperty("stopwords.filename", stopfile)

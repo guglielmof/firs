@@ -11,29 +11,29 @@ def get_pipeline(pt, index, conf):
 
     stopandstem, stopfile = get_stopandstem(stop, stem)
     if stopfile is not None:
-        properties = {"termpipelines": stopandstem, "stopwords.filename":stopfile}
+        properties = {"termpipelines": stopandstem, "stopwords.filename": stopfile}
     else:
         properties = {"termpipelines": stopandstem}
 
-
-    mdclass = models_dict[f'model.{model}.class']
-    mdtype = models_dict[f'model.{model}.type']
+    mdclass = models_dict[f'model.{model.lower()}.class']
+    mdtype = models_dict[f'model.{model.lower()}.type']
 
     if mdtype == 'terrier':
-        pipeline = pt.BatchRetrieve(index, wmodel=mdclass, verbose=False, properties = properties)
+        model = pt.BatchRetrieve(index, wmodel=mdclass, verbose=False, properties=properties)
+        pipeline = model
     else:
-        #TODO: implement the case when we have a python file
+        # TODO: implement the case when we have a python file
         pass
 
     if qryexp != 'none':
-        qeclass = qryexp_dict[f'queryexpansions.{qryexp}.class']
-        qetype = qryexp_dict[f'queryexpansions.{qryexp}.type']
+        qeclass = qryexp_dict[f'queryexpansions.{qryexp.lower()}.class']
+        qetype = qryexp_dict[f'queryexpansions.{qryexp.lower()}.type']
 
         if qetype == 'terrier':
-            rewriter = getattr(pt.rewrite, qeclass)(index, verbose=False, properties = properties)
-            pipeline = pipeline >> rewriter >> pipeline
+            rewriter = getattr(pt.rewrite, qeclass)(index, verbose=False, properties=properties)
+            pipeline = model >> rewriter >> model
         else:
-            #TODO: implement the case when we have a python file
+            # TODO: implement the case when we have a python file
             pass
 
     return pipeline

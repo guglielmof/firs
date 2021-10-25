@@ -1,19 +1,23 @@
 import pandas as pd
 import pytrec_eval
 
-def evaluate(self, measure="map"):
-    # very ugly way to make pytrec_eval works with our data collection
-    topic_evaluators = {tID: {sID: pytrec_eval.RelevanceEvaluator({tID: self.replicated_qrel[tID][sID]}, {measure})
-                              for sID in self.replicated_qrel[tID]} for tID in self.replicated_qrel}
+def evaluate(self, measure):
+
+    topicsIDs = list(self.replicated_qrel.keys())
+    shardsIDs = list(self.replicated_qrel[topicsIDs[0]].keys())
+    runsIDs   = list(self.replicated_runs.keys())
+
+    newQrels = {sID: {tID: self.replicated_qrel[tID][sID] for tID in topicsIDs} for sID in shardsIDs}
+    newRuns  = {sID: {rID: {tID:  self.replicated_runs[rID][tID][sID] for tID in topicsIDs} for rID in runsIDs} for sID in shardsIDs}
+
 
     # again, a very ugly solution to compute the measure
     measures = []
-    for rID in self.replicated_runs:
-        for tID in topic_evaluators:
-            for sID in self.replicated_runs[rID][tID]:
-                pointMeasure = topic_evaluators[tID][sID].evaluate({tID: self.replicated_runs[rID][tID][sID]})
-                pointMeasure = pointMeasure[tID][measure]
-                measures.append([rID, tID, sID, pointMeasure])
 
-    measures = pd.DataFrame(measures, columns=['system', 'topic', 'replicate', 'measure'])
+    for sID in shardsIDs:
+        measures.append(measure(newQrels[sID], newRuns[sID]))
+        measures[-1]['replicate'] = pd.Series([sID]*len(measures[-1].index()), index=measures[-1].index)
+
+    measures = pd.concat(measures)
+
     return measures

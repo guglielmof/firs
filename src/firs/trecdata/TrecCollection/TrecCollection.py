@@ -30,7 +30,7 @@ class TrecCollection:
 
 
     from .import_collection import import_collection, _import_collection, _import_runs, _import_qrels, _import_runs_list
-    from .evaluate import evaluate
+    from .evaluate import evaluate, import_measures
     from .parallel_evaluate import parallel_evaluate
     from .misc import remove_shorter_runs
     from .get_topics import get_topics, _import_topics
@@ -39,12 +39,3 @@ class TrecCollection:
     def _import_paths(self, collectionName):
         self.cpaths = dict(self.configs.items(f'collections.{collectionName}'))
 
-
-    def import_measures(self):
-        measures = pd.read_csv(self.cpaths['msrs_path'], index_col=False)
-        measures = measures.drop("Unnamed: 0", axis=1)
-        if self.collection_name == 'robust04qv':
-            measures = measures[measures['replicate'] == "0-0"].reset_index()
-            measures = measures.drop('index', axis=1).drop('replicate', axis=1)
-
-        return measures
