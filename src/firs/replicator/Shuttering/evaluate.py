@@ -16,7 +16,7 @@ def evaluate(self, measure):
 
     for sID in shardsIDs:
         measures.append(measure(newQrels[sID], newRuns[sID]))
-        measures[-1]['replicate'] = pd.Series([sID]*len(measures[-1].index()), index=measures[-1].index)
+        measures[-1]['replicate'] = pd.Series([sID]*len(measures[-1].index), index=measures[-1].index)
 
     measures = pd.concat(measures)
 

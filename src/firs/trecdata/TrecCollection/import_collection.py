@@ -33,7 +33,7 @@ def _import_collection(self, **kwargs):
 
 
 def _import_runs(self, nThreads):
-    run_paths = [self.cpaths['runs_path'] + p for p in os.listdir(self.cpaths['runs_path'])][:10]
+    run_paths = [self.cpaths['runs_path'] + p for p in os.listdir(self.cpaths['runs_path'])]
     runs_chunks = chunk_based_on_number(run_paths, nThreads)
     with Pool(processes=nThreads) as pool:
         futureRuns = [pool.apply_async(_import_runs_list, [chunk]) for chunk in runs_chunks]
